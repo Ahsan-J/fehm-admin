@@ -8,12 +8,14 @@ import { Button, Input } from 'spidev-react-elements'
 import { login } from "../api/auth"; 
 import Link from "next/link";
 import { unmarshalFormData } from "../helper/utility";
+import { useRouter } from "next/router";
 
 const Login: NextPage = () => {
 
     const dispatch = useDispatch<AppThunkDispatch>();
     const formRef = useRef<HTMLFormElement>(null);
     const loginBtn = useRef<any>();
+    const router = useRouter();
 
     const onLogin = useCallback(
         async (e) => {
@@ -27,12 +29,13 @@ const Login: NextPage = () => {
                     data: unmarshalFormData(new FormData(formRef.current)),
                 };
                 await dispatch(login(params))
+                router.replace('/login');
             } catch (e) {
                 console.log(e);
             }
             // loginBtn.current?.setLoader(false)
         },
-        [dispatch]
+        [dispatch, router]
     );
 
     return (
@@ -40,8 +43,8 @@ const Login: NextPage = () => {
             <div className={styles.login__innerContainer}>
                 <h2>FEHM</h2>
                 <form ref={formRef} onSubmit={onLogin}>
-                    <Input name="email" type="floating" label="Email Address" />
-                    <Input name="password" type="floating" label="Password" htmlType="password" />
+                    <Input type="floating" label="Email Address" />
+                    <Input  type="floating" label="Password" htmlType="password" />
                         <div className={styles.login__alternateActions}>
                             <Link href="/forgot">
                                 Forgot Password

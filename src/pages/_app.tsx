@@ -7,6 +7,8 @@ import { StyleSheet } from 'spidev-react-elements';
 import { AppThunkDispatch, RootState } from '../redux/types';
 import { useRouter } from 'next/router'
 import { setAuthUser } from '../redux/actions/auth';
+import MainLayout from '../layout/main';
+import Script from 'next/script';
 
 if (typeof window !== 'undefined') {
   StyleSheet.rehydrate((window as any).__REHYDRATE_IDS)
@@ -30,17 +32,26 @@ const App = React.memo((props) => {
       }
     }
     router.replace('/login');
-  }, [])
+  }, [dispatch, router])
 
   useEffect(() => {
     authenticate()
-  }, [])
-  
+  }, [authenticate])
+
+  if(!user?.id) {
+    return (
+      <React.Fragment>
+        {props.children}
+      </React.Fragment>
+    )
+  }
+
   return (
-    <React.Fragment>
-      {props.children}
-    </React.Fragment>
+      <MainLayout>
+        {props.children}
+      </MainLayout>
   )
+  
 })
 
 export default React.memo(({ Component, pageProps}: AppProps) => {
@@ -50,6 +61,9 @@ export default React.memo(({ Component, pageProps}: AppProps) => {
       <App>
         <Component {...pageProps} />
       </App>
+      <Script src="/jquery.min.js" />
+      <Script src="/popper.min.js" />
+      <Script src="/bootstrap.min.js" />
     </Provider>
   );
 });

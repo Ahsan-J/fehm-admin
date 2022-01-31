@@ -4,7 +4,7 @@ import { DocumentContext } from 'next/dist/shared/lib/utils'
 
 class MyDocument extends Document<any> {
   static async getInitialProps(ctx: DocumentContext) {
-    const { html, css }: {[key: string]: any} = StyleSheetServer.renderStatic(() =>  ctx.renderPage() as any)
+    const { html, css }: { [key: string]: any } = StyleSheetServer.renderStatic(() => ctx.renderPage() as any)
     const ids = css.renderedClassNames
     return { ...html, css, ids }
   }
@@ -18,7 +18,8 @@ class MyDocument extends Document<any> {
             data-aphrodite
             dangerouslySetInnerHTML={{ __html: css.content }}
           />
-          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossOrigin="anonymous"></link>
+          {/* eslint-disable-next-line @next/next/no-css-tags */}
+          <link rel="stylesheet" href="/bootstrap.min.css"></link>
         </Head>
         <body>
           <Main />

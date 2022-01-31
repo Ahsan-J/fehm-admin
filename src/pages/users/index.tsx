@@ -16,11 +16,11 @@ const Users: NextPage = () => {
         catch(e) {
             console.log(e)
         }
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         getAllUsers();
-    }, [])
+    }, [getAllUsers])
 
     const columns = useMemo(() => {
         return [
