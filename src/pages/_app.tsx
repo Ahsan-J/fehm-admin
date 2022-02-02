@@ -35,8 +35,11 @@ const App = React.memo((props) => {
   }, [dispatch, router])
 
   useEffect(() => {
-    authenticate()
-  }, [authenticate])
+    if(!user?.id) {
+      authenticate()
+    }
+  }, [authenticate, user]);
+
 
   if(!user?.id) {
     return (

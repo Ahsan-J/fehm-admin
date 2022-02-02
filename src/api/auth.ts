@@ -11,6 +11,5 @@ export const login = (params:IApiParam = {}) => (dispatch: AppThunkDispatch) => 
 }
 
 const onSuccessLogin = (response: AxiosResponse['data'], params: IApiParam) => (dispatch: AppThunkDispatch) => {
-    localStorage.setItem("auth_user", JSON.stringify(response.data))
     dispatch(setAuthUser(response.data));
 }

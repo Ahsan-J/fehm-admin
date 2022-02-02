@@ -1,5 +1,6 @@
-import axios, { AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios';
-import { AppThunkAction, AppThunkDispatch, RootState } from '../redux/types';
+import axios, { AxiosError, AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios';
+import { setAuthUser } from '../redux/actions/auth';
+import { AppThunkDispatch, RootState } from '../redux/types';
 
 const API_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 
@@ -36,13 +37,13 @@ export const apiCall = (params: IApiParam, onSuccess?: Function, onFailure?: Fun
 
 
   return axios(requestingObject)
-    .then((response) => {
+    .then((response: AxiosResponse) => {
       // OnSuccess common validations
       if (onSuccess) onSuccess(response.data, params);
       else console.log("onSuccess", requestingObject.url, response.data)
       resolve(response.data);
     })
-    .catch((err) => {
+    .catch((err: AxiosError) => {
       // onFailure common validations
       if (onFailure) onFailure(err, params);
       else console.log("onFailure", requestingObject.url, err, err.response?.data)
@@ -53,10 +54,13 @@ export const apiCall = (params: IApiParam, onSuccess?: Function, onFailure?: Fun
 export const dispatchAPI = (params: IApiParam, onSuccess?: Function, onFailure?: Function) => (dispatch: AppThunkDispatch) => {
   params.headers = dispatch(getHeaders(params));
   
-  return apiCall(params).then(response => {
+  return apiCall(params).then((response: AxiosResponse) => {
     if (onSuccess) dispatch(onSuccess(response, params));
     return response;
-  }).catch(e => {
+  }).catch((e: AxiosError) => {
+    if (e.response?.status == 401) {
+      dispatch(setAuthUser(null))
+    }
     if (onFailure) dispatch(onFailure(e, params));
     throw e;
   })

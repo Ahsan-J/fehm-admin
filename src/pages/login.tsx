@@ -9,17 +9,18 @@ import { login } from "../api/auth";
 import Link from "next/link";
 import { unmarshalFormData } from "../helper/utility";
 import { useRouter } from "next/router";
+import { IButtonInstance } from "spidev-react-elements/lib/components/Button/Button";
 
 const Login: NextPage = () => {
 
     const dispatch = useDispatch<AppThunkDispatch>();
     const formRef = useRef<HTMLFormElement>(null);
-    const loginBtn = useRef<any>();
+    const loginBtn = useRef<IButtonInstance>(null);
     const router = useRouter();
 
     const onLogin = useCallback(
         async (e) => {
-            // loginBtn.current?.setLoader(true)
+            loginBtn.current?.setLoader(true)
             e.preventDefault();
             const d = new Date(moment().add("1", "y").toISOString());
             
@@ -29,11 +30,11 @@ const Login: NextPage = () => {
                     data: unmarshalFormData(new FormData(formRef.current)),
                 };
                 await dispatch(login(params))
-                router.replace('/login');
+                router.replace('/');
             } catch (e) {
                 console.log(e);
             }
-            // loginBtn.current?.setLoader(false)
+            loginBtn.current?.setLoader(false)
         },
         [dispatch, router]
     );
@@ -43,8 +44,8 @@ const Login: NextPage = () => {
             <div className={styles.login__innerContainer}>
                 <h2>FEHM</h2>
                 <form ref={formRef} onSubmit={onLogin}>
-                    <Input type="floating" label="Email Address" />
-                    <Input  type="floating" label="Password" htmlType="password" />
+                    <Input name="email" value="abc@xyz.com" type="floating" label="Email Address" />
+                    <Input name="password" value="qwerty12345" type="floating" label="Password" htmlType="password" />
                         <div className={styles.login__alternateActions}>
                             <Link href="/forgot">
                                 Forgot Password

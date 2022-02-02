@@ -35,5 +35,15 @@
 }
 
 .main__header {
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+}
 
+.main__header > .header__left {
+    flex:1,
+}
+
+.main__header > .header__right {
+    flex:1,
 }

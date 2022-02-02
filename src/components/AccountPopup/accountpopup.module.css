@@ -1,0 +1,73 @@
+.container {
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 0.5rem;
+    background-color: #fff;
+    position: absolute;
+    z-index: 20;
+    /* min-width: 20rem; */
+    padding: 1rem;
+    right: 30%;
+}
+
+.container > .logout {
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.1);
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+}
+
+.container > .logout > .app_icon {
+    font-size: 1rem;
+}
+
+.container > .logout span {
+    padding:0;
+}
+
+
+.profileDetail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0.3rem 0;
+}
+
+.profileDetail * {
+    margin:0.2rem 0;
+}
+
+.profileDetail > .container {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 4.5rem;
+    font-size: 1.8rem;
+}
+
+.profileDetail > p {
+    font-size: 0.875rem;
+    color: gray
+}
+
+.accountNavList {
+    display:flex;
+    flex-direction: column;
+}
+
+.accountNavList a, .accountNavList .btn {
+    padding: 0.4rem;
+    margin: 0.2rem 0;
+    background: transparent;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.875rem;
+    /* border-top: 1px solid #dadce0;
+    border-bottom: 1px solid #dadce0; */
+    text-decoration: none;
+    box-shadow: none;
+}
+
+.logout:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}

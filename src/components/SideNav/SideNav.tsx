@@ -57,7 +57,7 @@ const SideNav: React.FC<propType> = React.memo((props) => {
                                 // height={props.full ? "1.6rem" : "1rem"}
                                 // width={props.full ? "1.6rem" : "1rem"}
                                 />
-                                {!props.full ? nav.heading : null}
+                                {props.full ? nav.heading : null}
                         </a>
                     </Link>
                 </li>
