@@ -2,8 +2,8 @@ import { NextPage } from 'next';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, Icon, NavBar, Avatar } from 'spidev-react-elements';
-import AccountPopup, { IAccountPopupInstance } from '../components/AccountPopup/AccountPopup';
-import SideNav from '../components/SideNav/SideNav';
+import AccountPopup, { IAccountPopupInstance } from '../components/layout/AccountPopup/AccountPopup';
+import SideNav from '../components/layout/SideNav/SideNav';
 import { RootState } from '../redux/types';
 import styles from './layout.module.css';
 
@@ -23,12 +23,12 @@ const MainLayout: NextPage = (props) => {
                 <SideNav full={fullWidth} />
             </div>
             <div className={styles.main__bodyContainer}>
-                <NavBar id="1" className='main__header'>
-                    <div className="header__left">
+                <NavBar id="1" className={styles.main__header}>
+                    <div className={styles.header__left}>
 
                     </div>
-                    <div className="header__right">
-                        <div ref={popupWrapperRef} className="header__account">
+                    <div className={styles.header__right} >
+                        <div ref={popupWrapperRef} className={styles.header__account} >
                             <Button onClick={() => accountPopupRef.current?.showPopup(p => !p)}>
                                 <Avatar name={user.name || "Ahsan Ahmed"} />
                             </Button>

@@ -16,6 +16,7 @@
     align-items: center;
     justify-content: center;
     box-shadow: none;
+    color: var(--black)
 }
 
 .container > .logout > .app_icon {

@@ -20,7 +20,7 @@ export const apiCall = (params: IApiParam, onSuccess?: Function, onFailure?: Fun
     url: getURL(params),
     headers: params.headers,
     method: params.method ? params.method : 'GET',
-    data: params.data || null,
+    data: params.data || undefined,
     params: params.params ? params.params : undefined,
   };
 

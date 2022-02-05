@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'
 import { setAuthUser } from '../redux/actions/auth';
 import MainLayout from '../layout/main';
 import Script from 'next/script';
+import useInitAPI from '../hooks/useInitAPI';
 
 if (typeof window !== 'undefined') {
   StyleSheet.rehydrate((window as any).__REHYDRATE_IDS)
@@ -40,6 +41,7 @@ const App = React.memo((props) => {
     }
   }, [authenticate, user]);
 
+  // useInitAPI();
 
   if(!user?.id) {
     return (

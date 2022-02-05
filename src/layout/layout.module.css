@@ -34,16 +34,20 @@
     width: 6rem !important;
 }
 
-.main__header {
+.header__account {
+    position: relative;
+}
+
+.main__header > div {
     justify-content: space-between;
     display: flex;
     flex-direction: row;
 }
 
-.main__header > .header__left {
+.main__header > div > .header__left {
     flex:1,
 }
 
-.main__header > .header__right {
+.main__header > div > .header__right {
     flex:1,
 }

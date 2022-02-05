@@ -4,7 +4,8 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
+    background-color: transparent;
+  }
 
 a {
   color: inherit;
@@ -13,4 +14,15 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.table_card {
+  border-radius: 0.2rem;
+  padding: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
+  background-color: white;
+}
+
+.table td, .table th {
+  border-top-width: 0;
 }

@@ -1,10 +1,11 @@
 import React, { useState, useCallback, useMemo, useImperativeHandle } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Icon, Avatar } from "spidev-react-elements";
-import { setAuthUser } from "../../redux/actions/auth";
+import { setAuthUser } from "../../../redux/actions/auth";
 import styles from "./accountpopup.module.css";
-import { RootState } from "../../redux/types";
+import { RootState } from "../../../redux/types";
 import Link from "next/link";
+import { logout } from "../../../api/auth";
 
 type NavListItem = {
   route?: string;
@@ -27,8 +28,8 @@ const AccountPopup = React.forwardRef<IAccountPopupInstance, propTypes>((props: 
   const dispatch = useDispatch();
   const user = useSelector((store: RootState) => store.auth.user);
 
-  const onLogout = useCallback(() => {
-    dispatch(setAuthUser(null));
+  const onLogout = useCallback(async () => {
+    await dispatch(logout())
   }, [dispatch]);
 
   const navList: Array<NavListItem> = useMemo(
@@ -83,7 +84,7 @@ const AccountPopup = React.forwardRef<IAccountPopupInstance, propTypes>((props: 
           </div>
           <div className={styles.accountNavList}>{renderActions}</div>
           <Button className={styles.logout} onClick={onLogout}>
-            <Icon name="logout" />
+            <Icon name="box-arrow-in-left" />
             <span>Logout</span>
           </Button>
         </div>

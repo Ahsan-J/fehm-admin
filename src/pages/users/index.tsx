@@ -1,16 +1,20 @@
 import moment from "moment";
 import type { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Table } from 'spidev-react-elements';
+import { Button, Modal, Table } from 'spidev-react-elements';
+import { IModalRef } from "spidev-react-elements/lib/components/Modal/Modal";
 import { getUsers } from "../../api/user";
+import CreateUser from "../../components/users/CreateUser/CreateUser";
 import { IUser } from "../../model/user";
 import { AppThunkDispatch } from "../../redux/types";
+import styles from '../../styles/users/users.module.css';
 
 const Users: NextPage = () => {
     const dispatch = useDispatch<AppThunkDispatch>();
-    const [users, setUsers] = useState<Array<IUser>>([])
+    const [users, setUsers] = useState<Array<IUser>>([]);
+    const modalRef = useRef<IModalRef>(null);
 
     const getAllUsers = useCallback(async () => {
         try {
@@ -31,7 +35,7 @@ const Users: NextPage = () => {
             {
                 label: "ID",
                 keyIndex: "id",
-                render: (v:any) => (
+                render: (v: any) => (
                     <Link href={`/users/${v}`}>{v}</Link>
                 )
             },
@@ -72,17 +76,23 @@ const Users: NextPage = () => {
     }, []);
 
     return (
-        <div>
-            <div className="card bg-light mb-3" >
-                <div className="card-header">Users</div>
-                <div className="card-body">
-                    <h4 className="card-title"></h4>
-                    <Table
-                        data={users}
-                        columnHeadings={columns} />
-                </div>
+        <div className={styles.userList__container}>
+            <div className={styles.userList__header}>
+                <h3>Users</h3>
+                <Button iconName="plus" onClick={() => modalRef.current?.showModal(true)}>
+                    Create User
+                </Button>
             </div>
+            <div className="table_card">
+                <Table
+                    data={users}
+                    columnHeadings={columns} />
+            </div>
+            <Modal ref={modalRef}>
+                <CreateUser onSuccess={getAllUsers}/>
+            </Modal>
         </div>
+
     )
 }
 
