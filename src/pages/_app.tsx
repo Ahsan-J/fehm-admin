@@ -9,7 +9,6 @@ import { useRouter } from 'next/router'
 import { setAuthUser } from '../redux/actions/auth';
 import MainLayout from '../layout/main';
 import Script from 'next/script';
-import useInitAPI from '../hooks/useInitAPI';
 
 if (typeof window !== 'undefined') {
   StyleSheet.rehydrate((window as any).__REHYDRATE_IDS)
@@ -31,15 +30,19 @@ const App = React.memo((props) => {
       catch(e) {
         console.log(e);
       }
+    } else if (!authRoutes.some(v => router.pathname.includes(v))) {
+      router.replace('/login');
     }
-    router.replace('/login');
-  }, [dispatch, router])
+  }, [dispatch, router]);
+
 
   useEffect(() => {
     if(!user?.id) {
       authenticate()
-    }
-  }, [authenticate, user]);
+    } else if(authRoutes.some(v => router.pathname.includes(v))) {
+      router.replace("/")
+    } 
+  }, [authenticate, router, user]);
 
   // useInitAPI();
 

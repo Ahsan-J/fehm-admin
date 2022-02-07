@@ -38,6 +38,15 @@
     position: relative;
 }
 
+.main__header {
+    max-height: 4rem;
+}
+
+.main__body {
+    height: calc(100vh - 5rem);
+    overflow-y: auto;
+}
+
 .main__header > div {
     justify-content: space-between;
     display: flex;

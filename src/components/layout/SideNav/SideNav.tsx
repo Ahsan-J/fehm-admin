@@ -23,7 +23,7 @@ const sideNavs: Array<SideNavItem> = [
     },
     {
         heading: "User",
-        link: '/users',
+        link: '/user',
         iconName: "person-circle",
     },
     {
@@ -33,7 +33,7 @@ const sideNavs: Array<SideNavItem> = [
     },
     {
         heading: "Books",
-        link: '/books',
+        link: '/book',
         iconName: "book",
     },
     {

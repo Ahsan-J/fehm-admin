@@ -75,7 +75,7 @@ const getURL = (params : IApiParam) => {
 };
 
 const getHeaders = (params: IApiParam) => (dispatch: AppThunkDispatch, getState: () => RootState) => {
-
+  const access_token = getState().auth.access_token || JSON.parse(localStorage.getItem("auth_user") || "{}").access_token
   const a: AxiosRequestHeaders = {
     "Content-Type": "application/json",
     // "Content-Type": "application/x-www-form-urlencoded",
@@ -83,8 +83,8 @@ const getHeaders = (params: IApiParam) => (dispatch: AppThunkDispatch, getState:
     'x-api-key': process.env.NEXT_PUBLIC_API_KEY || "",
   };
 
-  if (getState().auth.access_token) {
-    a['authorization'] = `Bearer ${getState().auth.access_token}`;
+  if (access_token) {
+    a['authorization'] = `Bearer ${access_token}`;
   }
 
   return a;

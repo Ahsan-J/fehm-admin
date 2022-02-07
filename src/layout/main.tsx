@@ -36,7 +36,9 @@ const MainLayout: NextPage = (props) => {
                         </div>
                     </div>
                 </NavBar>
-                {props.children}
+                <div className={styles.main__body}>
+                    {props.children}
+                </div>
             </div>
         </div>
     )

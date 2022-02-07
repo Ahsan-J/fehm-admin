@@ -14,6 +14,7 @@ class MyDocument extends Document<any> {
     return (
       <Html>
         <Head>
+          <title>{process.env.NEXT_PUBLIC_APP_NAME} | Admin</title>
           <style
             data-aphrodite
             dangerouslySetInnerHTML={{ __html: css.content }}
