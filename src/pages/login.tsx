@@ -8,7 +8,6 @@ import { Button, Input } from 'spidev-react-elements'
 import { login } from "../api/auth"; 
 import Link from "next/link";
 import { unmarshalFormData } from "../helper/utility";
-import { useRouter } from "next/router";
 import { IButtonInstance } from "spidev-react-elements/lib/components/Button/Button";
 
 const Login: NextPage = () => {
@@ -16,7 +15,6 @@ const Login: NextPage = () => {
     const dispatch = useDispatch<AppThunkDispatch>();
     const formRef = useRef<HTMLFormElement>(null);
     const loginBtn = useRef<IButtonInstance>(null);
-    const router = useRouter();
 
     const onLogin = useCallback(
         async (e) => {
@@ -30,20 +28,19 @@ const Login: NextPage = () => {
                     data: unmarshalFormData(new FormData(formRef.current)),
                 };
                 await dispatch(login(params))
-                router.replace('/');
             } catch (e) {
                 console.log(e);
             }
             loginBtn.current?.setLoader(false)
         },
-        [dispatch, router]
+        [dispatch]
     );
 
     return (
         <div className={styles.login__container}>
             <div className={styles.login__innerContainer}>
                 <h2>FEHM</h2>
-                <form ref={formRef} onSubmit={onLogin}>
+                <form ref={formRef}>
                     <Input name="email" value="abc@xyz.com" type="floating" label="Email Address" />
                     <Input name="password" value="qwerty12345" type="floating" label="Password" htmlType="password" />
                         <div className={styles.login__alternateActions}>
@@ -54,8 +51,7 @@ const Login: NextPage = () => {
                                 Request account
                             </Link>
                         </div>
-                    {/* <Button ref={loginBtn}>Login</Button> */}
-                    <input type="submit" value={"Login"}/>
+                    <Button htmlType="button" ref={loginBtn} onClick={onLogin}>Login</Button>
                 </form>
             </div>
         </div>
