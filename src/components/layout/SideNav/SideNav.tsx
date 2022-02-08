@@ -54,8 +54,6 @@ const SideNav: React.FC<propType> = React.memo((props) => {
                             <Icon 
                                 name={nav.iconName} 
                                 className={styles.sideNav__itemIcon} 
-                                // height={props.full ? "1.6rem" : "1rem"}
-                                // width={props.full ? "1.6rem" : "1rem"}
                                 />
                                 {props.full ? nav.heading : null}
                         </a>

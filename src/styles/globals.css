@@ -1,3 +1,7 @@
+:root {
+  --border-color: #65676B
+}
+
 html,
 body {
   padding: 0;
@@ -36,6 +40,10 @@ a {
 
 .table__actionContainer > button {
   margin: 0.1rem;
+}
+
+.table__rowStrike {
+  text-decoration: line-through;
 }
 
 button:focus {

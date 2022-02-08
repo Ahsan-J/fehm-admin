@@ -22,10 +22,32 @@ export const getUserRoles = (params:IApiParam = {}) => (dispatch: AppThunkDispat
     params.method = "GET";
     return dispatch(dispatchAPI(params))
 }
+
 /***********************************************************************************************/
 
 export const createUser = (params:IApiParam = {}) => (dispatch: AppThunkDispatch) => {
     params.path = "user/create"
     params.method = "POST";
+    return dispatch(dispatchAPI(params))
+}
+
+/***********************************************************************************************/
+
+export const updateUser = (params:IApiParam = {}) => (dispatch: AppThunkDispatch) => {
+    params.method = "PUT";
+    return dispatch(dispatchAPI(params))
+}
+
+/***********************************************************************************************/
+
+export const deleteUser = (params:IApiParam = {}) => (dispatch: AppThunkDispatch) => {
+    params.method = "DELETE";
+    return dispatch(dispatchAPI(params))
+}
+
+/***********************************************************************************************/
+
+export const restoreDeletedUser = (params:IApiParam = {}) => (dispatch: AppThunkDispatch) => {
+    params.method = "PUT";
     return dispatch(dispatchAPI(params))
 }

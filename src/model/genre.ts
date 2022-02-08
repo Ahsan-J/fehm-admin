@@ -1,4 +1,4 @@
-import { FictionGenre, GenreType, NonFictionGenre } from "../contant/genre.enum";
+import { FictionGenre, GenreType, NonFictionGenre } from "../constant/genre.enum";
 
 export interface IGenre {
     id: number;

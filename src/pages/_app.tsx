@@ -9,12 +9,11 @@ import { useRouter } from 'next/router'
 import { setAuthUser } from '../redux/actions/auth';
 import MainLayout from '../layout/main';
 import Script from 'next/script';
+import { authRoutes } from '../constant/app';
 
 if (typeof window !== 'undefined') {
   StyleSheet.rehydrate((window as any).__REHYDRATE_IDS)
 }
-
-const authRoutes = ['login', 'forgot', 'reset', 'register']
 
 const App = React.memo((props) => {
   const user = useSelector((store: RootState) => store.auth.user)
@@ -66,12 +65,12 @@ export default React.memo(({ Component, pageProps}: AppProps) => {
   const store = useMemo(() => createReduxStore(), [])
   return (
     <Provider store={store}>
-      <App>
-        <Component {...pageProps} />
-      </App>
       <Script src="/jquery.min.js" />
       <Script src="/popper.min.js" />
       <Script src="/bootstrap.min.js" />
+      <App>
+        <Component {...pageProps} />
+      </App>
     </Provider>
   );
 });

@@ -41,8 +41,8 @@ const Login: NextPage = () => {
             <div className={styles.login__innerContainer}>
                 <h2>FEHM</h2>
                 <form ref={formRef}>
-                    <Input name="email" value="abc@xyz.com" type="floating" label="Email Address" />
-                    <Input name="password" value="qwerty12345" type="floating" label="Password" htmlType="password" />
+                    <Input name="email" defaultValue="abc@xyz.com" type="floating" label="Email Address" />
+                    <Input name="password" defaultValue="qwerty12345" type="floating" label="Password" htmlType="password" />
                         <div className={styles.login__alternateActions}>
                             <Link href="/forgot">
                                 Forgot Password
