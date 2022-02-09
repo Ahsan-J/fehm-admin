@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, Icon, NavBar, Avatar } from 'spidev-react-elements';
 import AccountPopup, { IAccountPopupInstance } from '../components/layout/AccountPopup/AccountPopup';
@@ -12,6 +12,18 @@ const MainLayout: NextPage = (props) => {
     const user = useSelector((store: RootState) => store.auth.user);
     const popupWrapperRef = useRef<HTMLDivElement>(null);
     const accountPopupRef = useRef<IAccountPopupInstance>(null);
+
+    useEffect(() => {
+        const onClickOutside = (e: MouseEvent) => {
+            if (!popupWrapperRef.current?.contains(e.target as Node)) {
+                accountPopupRef.current?.showPopup(false)
+            }
+        }
+        document.addEventListener('click', onClickOutside);
+        return () => {
+            document.removeEventListener('click', onClickOutside);
+        }
+    }, [])
 
     return (
         <div className={styles.main__container}>

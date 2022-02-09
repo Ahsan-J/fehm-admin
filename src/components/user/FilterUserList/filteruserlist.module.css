@@ -1,0 +1,29 @@
+.filterUserList__container {
+    position: relative;
+}
+.filterUserList__popupContainer {
+    position: absolute;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 0.5rem;
+    background-color: #fff;
+    z-index: 20;
+    padding: 1rem;
+    right: 30%;
+    min-width: 20rem;
+}
+
+.filterUserList__filterRow {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.filterUserList__filterRow > h6 {
+    flex:0.4;
+}
+
+.filterUserList__filterRow > div {
+    display: flex;
+    flex-direction: column;
+    flex:0.6;
+}

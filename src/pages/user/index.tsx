@@ -7,6 +7,7 @@ import { Button, Modal, Table, Spinner, Input, Highlighter } from 'spidev-react-
 import { IModalRef } from "spidev-react-elements/lib/components/Modal/Modal";
 import { getUsers, deleteUser, restoreDeletedUser } from "../../api/user";
 import CreateUser from "../../components/user/CreateUser/CreateUser";
+import FilterUserList from "../../components/user/FilterUserList/FilterUserList";
 import { MemberShip, UserRole, UserStatus } from "../../constant/user.enum";
 import { IUser } from "../../model/user";
 import { AppThunkDispatch } from "../../redux/types";
@@ -55,21 +56,24 @@ const Users: NextPage = () => {
                 path: `user/${userId}`,
             }
             await dispatch(deleteUser(params));
+            getAllUsers()
         } catch(e) {
             console.log(e)
         }
-    }, [dispatch]);
+    }, [dispatch, getAllUsers]);
 
     const onRestore = useCallback(async (userId: IUser['id'], event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.stopPropagation();
         try {
             const params= {
-                path : `user/${userId}`
+                path : `user/${userId}/restore`
             }
             await dispatch(restoreDeletedUser(params))
+            getAllUsers()
         }catch(e) {
             console.log(e)
         }
-    }, [dispatch])
+    }, [dispatch, getAllUsers])
 
     const onEdit = useCallback((userId: IUser['id'], event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.stopPropagation();
@@ -127,14 +131,14 @@ const Users: NextPage = () => {
                             {!v.deleted_at ? (
                                 <Button iconName="trash" type="danger" onClick={onDelete.bind(this, v.id)} />
                             ): (
-                                <Button iconName="" type="success" onClick={onRestore.bind(this, v.id)}/>
+                                <Button iconName="arrow-counterclockwise" type="success" onClick={onRestore.bind(this, v.id)}/>
                             )}
                             <Button iconName="pencil-square" onClick={onEdit.bind(this, v.id)} />
                         </div>
                     )
             }
         ];
-    }, [onEdit, onDelete, filterText]);
+    }, [filterText, onDelete, onRestore, onEdit]);
 
     const onSearchByText: React.ChangeEventHandler<HTMLInputElement> = useCallback((e) =>{
         setFilterText(e.target.value);
@@ -179,7 +183,7 @@ const Users: NextPage = () => {
             </div>
             <div className={styles.userList__header}>
                 <Input type="floating" label="Search User"  onChange={onSearchByText} />
-                {/* <Input type="floating" label="Search User"  onChange={onSearchByText} /> */}
+                <FilterUserList />
             </div>
             <div className="table_card">
                 {loading ? (
