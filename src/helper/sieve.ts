@@ -10,16 +10,26 @@ const FUNC_EXP = {
   not_contains: "!@=",
   not_starts_with: "!_=",
 };
-class SieveGen {
-  value: string | number;
-  exp: keyof typeof FUNC_EXP = "contains";
 
-  constructor(exp: keyof typeof FUNC_EXP, v: string | number) {
+export type Expression = keyof typeof FUNC_EXP 
+
+export interface ISieveGen {
+  value: string | number;
+  exp: Expression;
+  generate: (v: string | number) => string;
+  setExp: (exp: Expression) => Expression;
+}
+
+class SieveGen implements ISieveGen {
+  value: string | number;
+  exp: Expression = "contains";
+
+  constructor(exp: Expression, v: string | number) {
     this.setExp(exp);
     this.value = v;
   }
 
-  setExp(exp: keyof typeof FUNC_EXP) {
+  setExp(exp: Expression) {
     if (FUNC_EXP[exp]) {
       return this.exp = exp;
     }
@@ -30,7 +40,6 @@ class SieveGen {
     return `${FUNC_EXP[this.exp]}${v}`.trimEnd();
   }
 }
-
 export const Contains = (v: string | number) => new SieveGen("contains", v);
 export const Equals = (v: string | number) => new SieveGen("equals", v);
 export const NotEquals = (v: string | number) => new SieveGen("not_equals", v);
@@ -42,10 +51,11 @@ export const StartsWith = (v: string | number) => new SieveGen("starts_with", v)
 export const NotContains = (v: string | number) => new SieveGen("not_contains", v);
 export const NotStartsWith = (v: string | number) => new SieveGen("not_starts_with", v);
 
-export const generateFilterQuery = (items: { [key in keyof typeof FUNC_EXP]: SieveGen }) => {
+export const generateFilterQuery = (items?: { [key in Expression]: SieveGen }) => {
+  if(!items) return "";
   return Object.keys(items)
     .map((k) => {
-      const f = items[k as keyof typeof FUNC_EXP];
+      const f = items[k as Expression];
       if (f instanceof SieveGen) {
         return `${k}${f.generate()}`
       }
