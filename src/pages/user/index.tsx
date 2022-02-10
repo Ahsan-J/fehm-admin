@@ -9,7 +9,7 @@ import { getUsers, deleteUser, restoreDeletedUser } from "../../api/user";
 import CreateUser from "../../components/user/CreateUser/CreateUser";
 import FilterUserList from "../../components/user/FilterUserList/FilterUserList";
 import { MemberShip, UserRole, UserStatus } from "../../constant/user.enum";
-import { transformToSieveSort } from "../../helper/utility";
+import { generateSortQuery } from "../../helper/sieve";
 import { IUser } from "../../model/user";
 import { AppThunkDispatch } from "../../redux/types";
 import styles from '../../styles/user/users.module.css';
@@ -18,8 +18,9 @@ const Users: NextPage = () => {
     const dispatch = useDispatch<AppThunkDispatch>();
     const [users, setUsers] = useState<Array<IUser>>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    const [sortKeys, setSortKeys] = useState<{[key in string]: boolean |"asc" | "desc"}>()
+    const [sortKeys, setSortKeys] = useState<{[key in string]: "asc" | "desc"}>()
     const [filterText, setFilterText] = useState<string>("");
+    const [appliedFilters, setFilters] = useState<{[key in string]: any}>({});
     const modalRef = useRef<IModalRef>(null);
     const router = useRouter();
 
@@ -28,7 +29,7 @@ const Users: NextPage = () => {
         try {
             const params = {
                 params: {
-                    sorts: transformToSieveSort(sortKeys)
+                    sorts: generateSortQuery(sortKeys)
                 }
             }
             const response = await dispatch(getUsers(params))

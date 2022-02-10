@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button } from "spidev-react-elements";
+import { Badge, Button } from "spidev-react-elements";
 import { MemberShip, UserRole, UserStatus } from "../../../constant/user.enum";
 import styles from './filteruserlist.module.css';
 
@@ -40,7 +40,9 @@ const FilterUserList: React.FC<propType> = React.memo((props: React.PropsWithChi
 
     return (
         <div ref={containerRef} className={`${styles.filterUserList__container} ${props.className || ""}`} style={props.style}>
-            <Button iconName="filter" type="light" onClick={setShowFilter.bind(this, !show)} />
+            <Button iconName="filter" type="light" onClick={setShowFilter.bind(this, !show)}>
+                Add Filter
+            </Button>
             {show && (
                 <form ref={formRef} className={styles.filterUserList__popupContainer}>
                     <div className={styles.filterUserList__filterRow}>
