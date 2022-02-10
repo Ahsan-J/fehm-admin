@@ -99,7 +99,7 @@ const CreateUser: React.FC<propTypes> = React.memo((props: React.PropsWithChildr
     }, [props.userId, getDetail])
 
     if (props.userId && !user?.id) {
-        return <Spinner show={true} />
+        return <Spinner loader={true} />
     }
 
     return (

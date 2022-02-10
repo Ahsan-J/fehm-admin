@@ -1,16 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Dropdown } from "spidev-react-elements";
+import { Button } from "spidev-react-elements";
 import { MemberShip, UserRole, UserStatus } from "../../../constant/user.enum";
 import styles from './filteruserlist.module.css';
 
 type propType = {
     className?: string;
     style?: React.CSSProperties;
+    onChangeFilter?: (key: string, value: any) => void;
 }
 
 const FilterUserList: React.FC<propType> = React.memo((props: React.PropsWithChildren<propType>) => {
     const [show, setShowFilter] = useState<boolean>(true);
     const containerRef = useRef<HTMLDivElement>(null);
+    const formRef = useRef<HTMLFormElement>(null);
+    const { onChangeFilter } = props;
 
     useEffect(() => {
         const onClickOutside = (e: MouseEvent) => {
@@ -22,13 +25,24 @@ const FilterUserList: React.FC<propType> = React.memo((props: React.PropsWithChi
         return () => {
             document.removeEventListener('click', onClickOutside);
         }
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        const form = formRef.current;
+        const onChange = (e: Event) => {
+            onChangeFilter?.((e.target as HTMLInputElement).name , (e.target as HTMLInputElement).value);
+        }
+        form?.addEventListener('change', onChange);
+        return () => {
+            form?.removeEventListener('change', onChange);
+        }
+    }, [onChangeFilter])
 
     return (
         <div ref={containerRef} className={`${styles.filterUserList__container} ${props.className || ""}`} style={props.style}>
             <Button iconName="filter" type="light" onClick={setShowFilter.bind(this, !show)} />
             {show && (
-                <form className={styles.filterUserList__popupContainer}>
+                <form ref={formRef} className={styles.filterUserList__popupContainer}>
                     <div className={styles.filterUserList__filterRow}>
                         <p><strong>User Role:</strong></p>
                         <div>
