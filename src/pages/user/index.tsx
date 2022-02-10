@@ -9,6 +9,7 @@ import { getUsers, deleteUser, restoreDeletedUser } from "../../api/user";
 import CreateUser from "../../components/user/CreateUser/CreateUser";
 import FilterUserList from "../../components/user/FilterUserList/FilterUserList";
 import { MemberShip, UserRole, UserStatus } from "../../constant/user.enum";
+import { transformToSieveSort } from "../../helper/utility";
 import { IUser } from "../../model/user";
 import { AppThunkDispatch } from "../../redux/types";
 import styles from '../../styles/user/users.module.css';
@@ -17,6 +18,7 @@ const Users: NextPage = () => {
     const dispatch = useDispatch<AppThunkDispatch>();
     const [users, setUsers] = useState<Array<IUser>>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const [sortKeys, setSortKeys] = useState<{[key in string]: boolean |"asc" | "desc"}>()
     const [filterText, setFilterText] = useState<string>("");
     const modalRef = useRef<IModalRef>(null);
     const router = useRouter();
@@ -24,14 +26,19 @@ const Users: NextPage = () => {
     const getAllUsers = useCallback(async () => {
         setLoading(true)
         try {
-            const response = await dispatch(getUsers())
+            const params = {
+                params: {
+                    sorts: transformToSieveSort(sortKeys)
+                }
+            }
+            const response = await dispatch(getUsers(params))
             setUsers(response.data);
         }
         catch (e) {
             console.log(e)
         }
         setLoading(false);
-    }, [dispatch])
+    }, [dispatch, sortKeys])
 
     useEffect(() => {
         getAllUsers();
@@ -84,19 +91,22 @@ const Users: NextPage = () => {
         return [
             {
                 label: "ID",
-                keyIndex: "id,email",
-                render: (v: any, _: any, index: any) => `${index + 1}`,
+                keyIndex: "id",
+                render: (v: any, _: any, index: any) => parseInt(`${index + 1}`),
             },
             {
                 label: "Name",
                 keyIndex: "first_name,last_name",
                 render: (v: any) => <Highlighter text={`${v.first_name} ${v.last_name}`.trim()} searchText={filterText} />,
+                sortable: true,
+                sortIndex: "first_name",
             },
-
+            
             {
                 label: "Email",
                 keyIndex: "email",
-                render: (v: any) => <Highlighter text={v || ""} searchText={filterText} />
+                render: (v: any) => <Highlighter text={v || ""} searchText={filterText} />,
+                sortable: true,
             },
             {
                 label: "Contact",
@@ -169,9 +179,7 @@ const Users: NextPage = () => {
         return users;
     }, [users, filterText])
 
-    const rowClassGenerator = useCallback((row: IUser) => {
-        return row.deleted_at ? "table__rowStrike" : ""
-    }, [])
+    const rowClassGenerator = useCallback((row: IUser) => row.deleted_at ? "table__rowStrike" : "", [])
 
     return (
         <div className={styles.userList__container}>
@@ -185,16 +193,15 @@ const Users: NextPage = () => {
                 <Input type="floating" label="Search User"  onChange={onSearchByText} />
                 <FilterUserList />
             </div>
-            <div className="table_card">
-                {loading ? (
-                    <Spinner show={loading} />
-                ): (
-                    <Table
-                        onRowItemClick={onRowItemClick}
-                        data={filtered}
-                        rowClass={rowClassGenerator}
-                        columnHeadings={columns} />
-                )}
+            <div className="table_card">                
+                <Table
+                    onSortData={(sortKey, direction) => setSortKeys({[sortKey as keyof IUser]: direction})}
+                    autoSort={false}
+                    loading={loading}
+                    onRowItemClick={onRowItemClick}
+                    data={filtered}
+                    rowClass={rowClassGenerator}
+                    columnHeadings={columns} />
             </div>
             <Modal ref={modalRef} onBackdrop={onBackdrop}>
                 <CreateUser userId={router.asPath.split("#")[1]} onSuccess={onSuccessCreate} />

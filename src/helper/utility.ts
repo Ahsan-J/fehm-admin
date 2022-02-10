@@ -131,3 +131,19 @@ export const unmarshalFormData = function (formData: FormData) {
 	}
 	return obj;
 };
+
+export const transformToSieveSort = (data: {[key in string]: boolean | "asc" | "desc"} = {}): string => {
+  return Object.keys(data).map((key) => {
+    const direction = data[key];
+    if(typeof direction == "boolean") {
+      return `+${key}`;
+    }
+    switch(direction) {
+      case "desc":
+        return `-${key}`;
+      case "asc":
+      default:
+        return `+${key}`
+    }
+  }).join(",")
+}
