@@ -65,9 +65,9 @@ export default React.memo(({ Component, pageProps}: AppProps) => {
   const store = useMemo(() => createReduxStore(), [])
   return (
     <Provider store={store}>
-      <Script src="/jquery.min.js" />
-      <Script src="/popper.min.js" />
-      <Script src="/bootstrap.min.js" />
+      <Script src="/jquery.min.js" strategy="beforeInteractive"/>
+      <Script src="/popper.min.js" strategy="beforeInteractive" />
+      <Script src="/bootstrap.min.js" strategy="beforeInteractive" />
       <App>
         <Component {...pageProps} />
       </App>

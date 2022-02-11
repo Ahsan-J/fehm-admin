@@ -22,7 +22,7 @@ export interface ISieveGen {
 
 class SieveGen implements ISieveGen {
   value: string | number;
-  exp: Expression = "contains";
+  exp: Expression = "equals";
 
   constructor(exp: Expression, v: string | number) {
     this.setExp(exp);
@@ -37,7 +37,10 @@ class SieveGen implements ISieveGen {
   }
 
   generate(v = this.value) {
-    return `${FUNC_EXP[this.exp]}${v}`.trimEnd();
+    if(v && v != undefined) {
+      return `${FUNC_EXP[this.exp]}${v}`.trimEnd();
+    }
+    return "";
   }
 }
 export const Contains = (v: string | number) => new SieveGen("contains", v);
@@ -51,23 +54,24 @@ export const StartsWith = (v: string | number) => new SieveGen("starts_with", v)
 export const NotContains = (v: string | number) => new SieveGen("not_contains", v);
 export const NotStartsWith = (v: string | number) => new SieveGen("not_starts_with", v);
 
-export const generateFilterQuery = (items?: { [key in Expression]: SieveGen }) => {
-  if(!items) return "";
+export const generateFilterQuery = (items?: { [key in string]: SieveGen }): string | undefined => {
+  if(!items) return undefined;
   return Object.keys(items)
     .map((k) => {
-      const f = items[k as Expression];
-      if (f instanceof SieveGen) {
+      const f = items[k];
+      if (f instanceof SieveGen && f.generate()) {
         return `${k}${f.generate()}`
       }
       return null;
     })
     .filter(v => v)
-    .join(",");
+    .join(",") || undefined;
 };
 
-export const generateSortQuery = (data: {[key in string]: "asc" | "desc"} = {}): string => {
-  return Object.keys(data).map((key) => {
-    const direction = data[key];
+export const generateSortQuery = (items: {[key in string]: "asc" | "desc"} = {}): string | undefined => {
+  if(!items) return undefined;
+  return Object.keys(items).map((key) => {
+    const direction = items[key];
     switch(direction) {
       case "desc":
         return `-${key}`;
@@ -75,5 +79,5 @@ export const generateSortQuery = (data: {[key in string]: "asc" | "desc"} = {}):
       default:
         return `+${key}`
     }
-  }).join(",")
+  }).join(",") || undefined
 }

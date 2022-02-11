@@ -9,7 +9,7 @@ import { getUsers, deleteUser, restoreDeletedUser } from "../../api/user";
 import CreateUser from "../../components/user/CreateUser/CreateUser";
 import FilterUserList from "../../components/user/FilterUserList/FilterUserList";
 import { MemberShip, UserRole, UserStatus } from "../../constant/user.enum";
-import { generateSortQuery } from "../../helper/sieve";
+import { Contains, Equals, generateFilterQuery, generateSortQuery, ISieveGen } from "../../helper/sieve";
 import { IUser } from "../../model/user";
 import { AppThunkDispatch } from "../../redux/types";
 import styles from '../../styles/user/users.module.css';
@@ -20,7 +20,7 @@ const Users: NextPage = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [sortKeys, setSortKeys] = useState<{[key in string]: "asc" | "desc"}>()
     const [filterText, setFilterText] = useState<string>("");
-    const [appliedFilters, setFilters] = useState<{[key in string]: any}>({});
+    const [appliedFilters, setFilters] = useState<{[key in string]: ISieveGen}>();
     const modalRef = useRef<IModalRef>(null);
     const router = useRouter();
 
@@ -29,7 +29,8 @@ const Users: NextPage = () => {
         try {
             const params = {
                 params: {
-                    sorts: generateSortQuery(sortKeys)
+                    sorts: generateSortQuery(sortKeys),
+                    filters: generateFilterQuery(appliedFilters),
                 }
             }
             const response = await dispatch(getUsers(params))
@@ -39,7 +40,7 @@ const Users: NextPage = () => {
             console.log(e)
         }
         setLoading(false);
-    }, [dispatch, sortKeys])
+    }, [dispatch, sortKeys, appliedFilters])
 
     useEffect(() => {
         getAllUsers();
@@ -182,6 +183,17 @@ const Users: NextPage = () => {
 
     const rowClassGenerator = useCallback((row: IUser) => row.deleted_at ? "table__rowStrike" : "", [])
 
+    const onApplyFilters = useCallback((filters) => {
+        setFilters({
+            contact_number: Contains(filters.contact_number),
+            email: Contains(filters.email),
+            first_name: Contains(filters.first_name),
+            membership_status: Equals(filters.membership_status),
+            role: Equals(filters.role),
+            status: Equals(filters.status),
+        })
+    }, [])
+
     return (
         <div className={styles.userList__container}>
             <div className={styles.userList__header}>
@@ -192,7 +204,9 @@ const Users: NextPage = () => {
             </div>
             <div className={styles.userList__header}>
                 <Input type="floating" label="Search User"  onChange={onSearchByText} />
-                <FilterUserList />
+            </div>
+            <div className={styles.userList__header}>
+                <FilterUserList applied={appliedFilters} onApply={onApplyFilters}/>
             </div>
             <div className="table_card">                
                 <Table
