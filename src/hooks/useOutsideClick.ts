@@ -1,12 +1,12 @@
 import { useEffect, useRef } from "react";
 
-const useOutsideClick = <T = HTMLDivElement>(handler: () => void) => {
+const useOutsideClick = <T = HTMLDivElement>(handler: (e: MouseEvent) => void) => {
     const containerRef = useRef<T>(null);
     
     useEffect(() => {
         const onClickOutside = (e: MouseEvent) => {
             if (containerRef.current instanceof HTMLElement && !containerRef.current?.contains(e.target as Node)) {
-                handler();
+                handler(e);
             }
         }
         document.addEventListener('click', onClickOutside);

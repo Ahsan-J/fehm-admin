@@ -10,7 +10,7 @@ type propType = {
     className?: string;
     style?: React.CSSProperties;
     onApply?: (filters: {[key in string]: string | number}) => void;
-    onChangeFilter?: (key: string, value: string | number) => void;
+    onRemoveFilter?: (key: string) => void;
     applied?: {[key in string]: ISieveGen | string | number}
 }
 
@@ -18,7 +18,7 @@ const FilterUserList: React.FC<propType> = React.memo((props: React.PropsWithChi
     const [show, setShowFilter] = useState<boolean>(false);
     const containerRef = useOutsideClick<HTMLDivElement>(() => setShowFilter(false));
     const formRef = useRef<HTMLFormElement>(null);
-    const { onApply } = props;
+    const { onApply, onRemoveFilter } = props;
 
     const onSubmitFilters: React.FormEventHandler<HTMLFormElement> = useCallback((e) => {
         e.preventDefault();
@@ -40,16 +40,26 @@ const FilterUserList: React.FC<propType> = React.memo((props: React.PropsWithChi
     }, [props.applied])
 
     const renderAppliedFilterBadge = useMemo(() => {
-        
+        const transform: {[key in string]: (v: number) => string} = {
+            "role": (v: number) => UserRole[v],
+            "status": (v: number) => UserStatus[v],
+            "membership_status": (v: number) => MemberShip[v], 
+        }
+
         return (
             <div className={styles.filterUserList__badgeContainer}>
-                {Object.keys(applied).filter(k => applied[k]).map((key) => {
+                {Object.keys(applied).filter(k => applied[k]).map((key: string) => {
                     const value = applied[key];
-                    return <Badge key={key} text={`${value}`} />
+                    return (
+                        <Badge 
+                            key={key}
+                            removeChip={() => onRemoveFilter?.(key)}
+                            text={`${transform[key]?.(parseInt(`${value}`)) || value}`} />
+                    )
                 })}
             </div>
         )
-    }, [applied])
+    }, [applied, onRemoveFilter])
 
     return (
         <div ref={containerRef} className={`${styles.filterUserList__container} ${props.className || ""}`} style={props.style}>

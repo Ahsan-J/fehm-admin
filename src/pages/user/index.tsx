@@ -8,6 +8,7 @@ import { IModalRef } from "spidev-react-elements/lib/components/Modal/Modal";
 import { getUsers, deleteUser, restoreDeletedUser } from "../../api/user";
 import CreateUser from "../../components/user/CreateUser/CreateUser";
 import FilterUserList from "../../components/user/FilterUserList/FilterUserList";
+import UserHoverDetail from "../../components/user/UserHoverDetail/UserHoverDetail";
 import { MemberShip, UserRole, UserStatus } from "../../constant/user.enum";
 import { Contains, Equals, generateFilterQuery, generateSortQuery, ISieveGen } from "../../helper/sieve";
 import { IUser } from "../../model/user";
@@ -194,6 +195,20 @@ const Users: NextPage = () => {
         })
     }, [])
 
+    const onRemoveFilter = useCallback((key) => {
+        setFilters(filters => {
+            const f = Object.assign({}, filters)
+            if(f) delete f[key]
+            return f;
+        })
+    },[]);
+
+    const renderOnRowHover = useCallback((row, index) => {
+        return (
+            <UserHoverDetail user={row}/>
+        );
+    }, [])
+
     return (
         <div className={styles.userList__container}>
             <div className={styles.userList__header}>
@@ -206,14 +221,16 @@ const Users: NextPage = () => {
                 <Input type="floating" label="Search User"  onChange={onSearchByText} />
             </div>
             <div className={styles.userList__header}>
-                <FilterUserList applied={appliedFilters} onApply={onApplyFilters}/>
+                <FilterUserList applied={appliedFilters} onApply={onApplyFilters} onRemoveFilter={onRemoveFilter} />
             </div>
             <div className="table_card">                
                 <Table
+                renderOnRowHover={renderOnRowHover}
                     onSortData={(sortKey, direction) => setSortKeys({[sortKey as keyof IUser]: direction})}
                     autoSort={false}
                     loading={loading}
                     onRowItemClick={onRowItemClick}
+                    onPageChange={(p) => console.log(p)}
                     data={filtered}
                     rowClass={rowClassGenerator}
                     columnHeadings={columns} />

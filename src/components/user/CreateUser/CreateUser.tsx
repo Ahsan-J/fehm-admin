@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Button, Dropdown, Input, Spinner } from "spidev-react-elements";
+import { Avatar, Button, Dropdown, Icon, Input, Spinner } from "spidev-react-elements";
 import Chance from 'chance';
 import styles from './createuser.module.css';
 import { MemberShip, UserRole, UserStatus } from "../../../constant/user.enum";
@@ -106,6 +106,11 @@ const CreateUser: React.FC<propTypes> = React.memo((props: React.PropsWithChildr
         <form ref={formRef} className={`${styles.createUser__container} ${props.className || ""}`.trim()} >
             <legend>Create User</legend>
             <div className={styles.createUser__innerContainer}>
+                <div className={styles.createUser__row}>
+                    <Avatar className={styles.createUser__avatar} src={chance.avatar({email: chance.email() })}>
+                        <Icon onClick={() => console.log()} name="pencil" style={{position: "absolute", bottom: 0, right: 0, zIndex: 10,}} />
+                    </Avatar>
+                </div>
                 <div className={styles.createUser__row}>
                     <Input name="first_name" defaultValue={user?.first_name || chance.first()} type="floating" label="First name" />
                     <Input name="last_name" defaultValue={user?.last_name || chance.last()} type="floating" label="Last name" />
