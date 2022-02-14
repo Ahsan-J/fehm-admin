@@ -53,7 +53,7 @@ const FilterUserList: React.FC<propType> = React.memo((props: React.PropsWithChi
                     return (
                         <Badge 
                             key={key}
-                            removeChip={() => onRemoveFilter?.(key)}
+                            remove={() => onRemoveFilter?.(key)}
                             text={`${transform[key]?.(parseInt(`${value}`)) || value}`} />
                     )
                 })}

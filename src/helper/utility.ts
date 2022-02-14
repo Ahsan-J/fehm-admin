@@ -131,3 +131,10 @@ export const unmarshalFormData = function (formData: FormData) {
 	}
 	return obj;
 };
+
+export const getProfileSrc = (profile_url = "") => {
+  if(profile_url) {
+    return `${process.env.NEXT_PUBLIC_BASE_URL}${profile_url}`;
+  }
+  return "";
+}

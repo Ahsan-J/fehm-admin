@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from 'axios';
 import { setAuthUser } from '../redux/actions/auth';
 import { AppThunkDispatch, RootState } from '../redux/types';
+import { urlRegex } from "./regex";
 
 const API_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 
@@ -13,6 +14,7 @@ export interface IApiParam{
   onUploadProgress?: AxiosRequestConfig['onUploadProgress'],
   onDownloadProgress?:AxiosRequestConfig['onDownloadProgress'],
   headers?: AxiosRequestConfig['headers'],
+  responseType?: 'arraybuffer' | 'document' | 'json' | 'text' | 'stream' | 'blob'
 }
 
 export const apiCall = (params: IApiParam, onSuccess?: Function, onFailure?: Function) => new Promise<AxiosResponse['data']>((resolve, reject) => {
@@ -22,6 +24,7 @@ export const apiCall = (params: IApiParam, onSuccess?: Function, onFailure?: Fun
     method: params.method ? params.method : 'GET',
     data: params.data || undefined,
     params: params.params ? params.params : undefined,
+    responseType: params.responseType || "json",
   };
 
   if (params.cancelToken)  // injecting the cancel token
@@ -39,6 +42,13 @@ export const apiCall = (params: IApiParam, onSuccess?: Function, onFailure?: Fun
   return axios(requestingObject)
     .then((response: AxiosResponse) => {
       // OnSuccess common validations
+
+      if (response.data instanceof Blob) {
+        response.data = new File([response.data], params.path?.substring(params.path?.lastIndexOf('/') + 1) || "", {        
+          type: response.headers['content-type']
+        })
+      }
+
       if (onSuccess) onSuccess(response.data, params);
       else console.log("onSuccess", requestingObject.url, response.data)
       resolve(response.data);
@@ -54,7 +64,7 @@ export const apiCall = (params: IApiParam, onSuccess?: Function, onFailure?: Fun
 export const dispatchAPI = (params: IApiParam, onSuccess?: Function, onFailure?: Function) => (dispatch: AppThunkDispatch) => {
   params.headers = dispatch(getHeaders(params));
   
-  return apiCall(params).then((response: AxiosResponse) => {
+  return apiCall(params).then((response: any) => {
     if (onSuccess) dispatch(onSuccess(response, params));
     return response;
   }).catch((e: AxiosError) => {
@@ -67,14 +77,19 @@ export const dispatchAPI = (params: IApiParam, onSuccess?: Function, onFailure?:
 } 
 
 const getURL = (params : IApiParam) => {
-  if (params.path)
+  if (params.path) {
+    if(urlRegex.test(params.path)) {
+      return params.path
+    }
     return `${API_URL}/${params.path}`;
+  }
    else
     throw new Error('Path is undefined');
 
 };
 
 const getHeaders = (params: IApiParam) => (dispatch: AppThunkDispatch, getState: () => RootState) => {
+  if(urlRegex.test(params.path || "")) return {}
   const access_token = getState().auth.access_token || JSON.parse(localStorage.getItem("auth_user") || "{}").access_token
   const a: AxiosRequestHeaders = {
     "Content-Type": "application/json",
