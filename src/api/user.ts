@@ -51,3 +51,16 @@ export const restoreDeletedUser = (params:IApiParam = {}) => (dispatch: AppThunk
     params.method = "PUT";
     return dispatch(dispatchAPI(params))
 }
+
+/***********************************************************************************************/
+
+export const addUserGenre = (params:IApiParam = {}) => (dispatch: AppThunkDispatch) => {
+    params.method = "POST";
+    return dispatch(dispatchAPI(params))
+}
+/***********************************************************************************************/
+
+export const deleteUserGenre = (params:IApiParam = {}) => (dispatch: AppThunkDispatch) => {
+    params.method = "DELETE";
+    return dispatch(dispatchAPI(params))
+}

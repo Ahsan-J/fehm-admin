@@ -155,6 +155,16 @@ const Users: NextPage = () => {
 
     const onSearchByText: React.ChangeEventHandler<HTMLInputElement> = useCallback((e) =>{
         setFilterText(e.target.value);
+        // window.clearTimeout(inputDebounce.current)
+        // inputDebounce.current = window.setTimeout(() => {
+        //     setFilters(f => ({
+        //         ...f,
+        //         last_name: Contains(e.target.value), 
+        //         email: Contains(e.target.value),
+        //         first_name: Contains(e.target.value),
+        //         contact_number: Contains(e.target.value),
+        //     }))
+        // }, 1000)
     }, [])
 
     const onBackdrop = useCallback(() => {
@@ -218,7 +228,7 @@ const Users: NextPage = () => {
                 </Button>
             </div>
             <div className={styles.userList__header}>
-                <Input type="floating" label="Search User"  onChange={onSearchByText} />
+                <Input type="floating" label="Search User" onChange={onSearchByText} />
             </div>
             <div className={styles.userList__header}>
                 <FilterUserList applied={appliedFilters} onApply={onApplyFilters} onRemoveFilter={onRemoveFilter} />

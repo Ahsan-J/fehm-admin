@@ -1,0 +1,9 @@
+.genreSelector__dropdown > button {
+    border-radius: 5rem;
+    margin: 1rem 0;
+}
+.genreSelector__dropdown > ul {
+    max-height: 10rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
