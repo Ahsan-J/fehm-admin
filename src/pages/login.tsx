@@ -1,10 +1,10 @@
 import moment from "moment";
 import { NextPage } from "next";
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { AppThunkDispatch } from "../redux/types";
 import styles from  '../styles/login.module.css';
-import { Button, Input } from 'spidev-react-elements'
+import { Button, Input, RandomImage } from 'spidev-react-elements'
 import { login } from "../api/auth"; 
 import Link from "next/link";
 import { unmarshalFormData } from "../helper/utility";
@@ -38,6 +38,7 @@ const Login: NextPage = () => {
 
     return (
         <div className={styles.login__container}>
+            <RandomImage className={styles.userDetail__cover} />
             <div className={styles.login__innerContainer}>
                 <h2>FEHM</h2>
                 <form ref={formRef}>

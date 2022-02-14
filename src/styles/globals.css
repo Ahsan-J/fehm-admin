@@ -36,6 +36,7 @@ a {
 
 .table__actionContainer {
   flex-direction: row;
+  display: flex;
 }
 
 .table__actionContainer > button {
