@@ -70,7 +70,7 @@ export default React.memo(({ Component, pageProps }: AppProps) => {
   const store = useMemo(() => createReduxStore(), [])
   return (
     <Provider store={store}>
-      <audio id="remoteVideo" autoPlay controls />
+      <audio id="remoteVideo" autoPlay controls style={{display: "none"}}/>
       <Script src="/jquery.min.js" strategy="beforeInteractive" />
       <Script src="/popper.min.js" strategy="beforeInteractive" />
       <Script src="/bootstrap.min.js" strategy="beforeInteractive" />
