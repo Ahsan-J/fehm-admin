@@ -1,0 +1,50 @@
+.createUser__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.createUser__container > legend {
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.createUser__row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.createUser__row > label {
+    border-bottom: 1px solid silver;
+}
+
+.createUser__row > * {
+    flex:1;
+    margin: 0.8rem;
+}
+
+.createUser__avatar {
+    flex: unset;
+    width: 8rem;
+    height: 8rem;
+    border-radius: 8rem;
+}
+
+.createUser__innerContainer {
+    width:80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.createUser__innerContainer > button {
+    margin: 0.8rem;
+}
+
+.createUser__roleDropdown {
+    flex:1;
+}
+
+.createUser__roleDropdown > * {
+    width: 100%;
+}

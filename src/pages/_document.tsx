@@ -1,6 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { StyleSheetServer } from 'aphrodite'
-import { DocumentContext } from 'next/dist/shared/lib/utils'
+import { DocumentContext } from 'next/dist/shared/lib/utils';
 
 class MyDocument extends Document<any> {
   static async getInitialProps(ctx: DocumentContext) {

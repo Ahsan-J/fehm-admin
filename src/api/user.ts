@@ -2,7 +2,7 @@ import { dispatchAPI, IApiParam } from "../helper/api";
 import { AppThunkDispatch } from "../redux/types";
 
 export const getUsers = (params:IApiParam = {}) => (dispatch: AppThunkDispatch) => {
-    params.path = "user/all"
+    params.path = "user"
     params.method = "GET";
     
     return dispatch(dispatchAPI(params))

@@ -11,4 +11,7 @@ export interface IBook {
     purchase_url: string;
     genre: IGenre[];
     audio_list: IAudio[];
+    created_at: string;
+    deleted_at: string | null;
+    updated_at: string;
 }
