@@ -8,4 +8,8 @@ export interface IAuthor {
     url: string;
     genre: IGenre[];
     books: IBook[];
+    created_at: string;
+    deleted_at: string | null;
+    updated_at: string;
+    status: number;
 }
