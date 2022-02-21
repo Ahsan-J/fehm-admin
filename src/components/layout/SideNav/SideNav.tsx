@@ -27,9 +27,9 @@ const sideNavs: Array<SideNavItem> = [
         iconName: "person-circle",
     },
     {
-        heading: "Audio",
-        link: '/audio',
-        iconName: "music-note",
+        heading: "Author",
+        link: '/author',
+        iconName: "vector-pen",
     },
     {
         heading: "Books",
