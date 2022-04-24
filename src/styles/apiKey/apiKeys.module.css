@@ -1,9 +1,9 @@
-.authorList__container {
+.apiKeyList__container {
     padding: 1rem;
     margin-top: 1rem;
 }
 
-.authorList__header {
+.apiKeyList__header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
